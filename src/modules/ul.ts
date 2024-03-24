@@ -2,7 +2,6 @@ import { Reload } from "../types";
 import { MakeRequest } from "./http.request";
 const places: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tasks");
 const http = new MakeRequest()
-let confetti = document.querySelector('#confetti') as HTMLCanvasElement
 let js_confetti = new JSConfetti()
 import { audio } from "../main";
 
@@ -36,8 +35,8 @@ export function reload({ arr, places }: Reload) {
 		};
 		div.ondragend = () => {
 			trash.classList.remove('delete')
-			div.classList.remove("invisible");
 			div.classList.remove("hold");
+			div.classList.remove("invisible");
 			div.removeAttribute('id')
 		};
 
@@ -56,9 +55,13 @@ export function reload({ arr, places }: Reload) {
 
 		trash.ondrop = () => {
 			div.remove()
-			audio.play()
 			http.deleteData('/tasks/' + item.id)
-			js_confetti.addConfetti()
+			audio.play()
+			js_confetti.addConfetti({
+				confettiRadius: 5,
+				confettiNumber: 5,
+				confettiColors: ['red'],
+			})
 		}
 	}
 }
